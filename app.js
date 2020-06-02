@@ -1,3 +1,4 @@
+const config = require('config');
 const express = require('express');
 const vehicles = require('./routes/vehicles');
 const home = require('./routes/home');
@@ -6,6 +7,11 @@ const users = require('./routes/users');
 const auth = require('./routes/auth');
 
 const app = express();
+//
+if (!config.get('jwtPrivateKey')) {
+  console.error('FATAL ERROR: jwtPrivateKey is not defined.');
+  process.exit(1);
+}
 // connection to the database
 mongoose
   .connect('mongodb://localhost/vehicles', {
