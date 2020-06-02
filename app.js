@@ -3,6 +3,7 @@ const vehicles = require('./routes/vehicles');
 const home = require('./routes/home');
 const mongoose = require('mongoose');
 const users = require('./routes/users');
+const auth = require('./routes/auth');
 
 const app = express();
 // connection to the database
@@ -17,9 +18,10 @@ mongoose
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use('/', home);
 app.use('/api/vehicles', vehicles);
 app.use('/api/users', users);
-app.use('/', home);
+app.use('/api/auth', auth);
 
 // Server // PORT
 const port = process.env.PORT || 3000;
