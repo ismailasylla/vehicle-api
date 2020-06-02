@@ -12,6 +12,54 @@ const Vehicle = mongoose.model(
       minlength: 2,
       maxlenght: 15,
     },
+    category: {
+      type: String,
+      required: false,
+      minlength: 2,
+      maxlenght: 15,
+    },
+    transmission: {
+      type: String,
+      required: false,
+      minlength: 2,
+      maxlenght: 15,
+    },
+    engine: {
+      type: String,
+      required: false,
+      minlength: 2,
+      maxlenght: 15,
+    },
+    engine: {
+      type: String,
+      required: false,
+      minlength: 2,
+      maxlenght: 15,
+    },
+    fuelType: {
+      type: String,
+      required: false,
+      minlength: 2,
+      maxlenght: 15,
+    },
+    colorExterior: {
+      type: String,
+      required: false,
+      minlength: 2,
+      maxlenght: 15,
+    },
+    colorInterior: {
+      type: String,
+      required: false,
+      minlength: 2,
+      maxlenght: 15,
+    },
+    price: {
+      type: Number,
+      required: false,
+      minlength: 10,
+      maxlenght: 200,
+    },
   })
 );
 
@@ -32,13 +80,13 @@ router.post('/', async (req, res) => {
 
   let vehicle = new Vehicle({
     name: req.body.name,
-    // category: req.body.category,
-    // transmission: req.body.transmission,
-    // engine: req.body.engine,
-    // fuelType: req.body.fuelType,
-    // colorExterior: req.body.colorExterior,
-    // colorInterior: req.body.colorInterior,
-    // price: req.body.price,
+    category: req.body.category,
+    transmission: req.body.transmission,
+    engine: req.body.engine,
+    fuelType: req.body.fuelType,
+    colorExterior: req.body.colorExterior,
+    colorInterior: req.body.colorInterior,
+    price: req.body.price,
   });
   vehicle = await vehicle.save();
   res.send(vehicle);
@@ -73,13 +121,13 @@ router.put('/:id', async (req, res) => {
 function validateVehicle(vehicle) {
   const schema = {
     name: Joi.string().required(),
-    // category: Joi.string(),
-    // transmission: Joi.string().length(10),
-    // engine: Joi.number(),
-    // fuelType: Joi.string().length(5),
-    // colorExterior: Joi.string().length(10),
-    // colorInterior: Joi.string().length(10),
-    // price: Joi.number(),
+    category: Joi.string(),
+    transmission: Joi.string().length(10),
+    engine: Joi.number(),
+    fuelType: Joi.string().length(5),
+    colorExterior: Joi.string().length(10),
+    colorInterior: Joi.string().length(10),
+    price: Joi.number(),
   };
 
   return Joi.validate(vehicle, schema);
