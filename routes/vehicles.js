@@ -8,7 +8,7 @@ const Vehicle = mongoose.model(
   new mongoose.Schema({
     name: {
       type: String,
-      required: true,
+      required: false,
       minlength: 2,
       maxlenght: 15,
     },
@@ -23,12 +23,7 @@ const Vehicle = mongoose.model(
       required: false,
       minlength: 2,
       maxlenght: 15,
-    },
-    engine: {
-      type: String,
-      required: false,
-      minlength: 2,
-      maxlenght: 15,
+      lowercase: true,
     },
     engine: {
       type: String,
@@ -122,11 +117,11 @@ function validateVehicle(vehicle) {
   const schema = {
     name: Joi.string().required(),
     category: Joi.string(),
-    transmission: Joi.string().length(10),
+    transmission: Joi.string().length(15),
     engine: Joi.number(),
     fuelType: Joi.string().length(5),
-    colorExterior: Joi.string().length(10),
-    colorInterior: Joi.string().length(10),
+    colorExterior: Joi.string().length(15),
+    colorInterior: Joi.string().length(15),
     price: Joi.number(),
   };
 
