@@ -30,7 +30,7 @@ router.post('/', async (req, res) => {
   user = await user.save();
 
   // jwt ....payload to return a token when a user signs in a token is genarated
-  const token = jwt.sign({ _id: user._id }, config.get('jwtPrivateKey'));
+  const token = user.genarateAuthToken();
   res
     .header('x-auth-token', token)
     .send(_.pick(user, ['_id', 'name', 'email']));
