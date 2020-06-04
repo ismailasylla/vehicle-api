@@ -1,5 +1,3 @@
-const config = require('config');
-const jwt = require('jsonwebtoken');
 const Joi = require('@hapi/joi');
 const bcrypt = require('bcrypt');
 const _ = require('lodash');
@@ -20,8 +18,8 @@ router.post('/', async (req, res) => {
   const validPassword = await bcrypt.compare(req.body.password, user.password);
   if (!validPassword) return res.status(400).send('Invalid email or password.');
 
-  // jwt ....payload to return a token when a user signs in a token is genarated
-  const token = jwt.sign({ _id: user._id }, config.get('jwtPrivateKey'));
+  // jwt ....payload to return a token when a user signs in => a token is genarated
+  const token = user.generateAuthToken();
   res.send(token);
 });
 
