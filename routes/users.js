@@ -1,3 +1,4 @@
+const auth = require('../middleware/auth'); // auhorisation
 const jwt = require('jsonwebtoken');
 const config = require('config');
 const bcrypt = require('bcrypt');
@@ -7,9 +8,16 @@ const { User, validate } = require('../models/user');
 const express = require('express');
 const router = express.Router();
 
-// Route for creating new users
+// Route get the current user and  proctecting password to be hidden.
+//@Get Current User
+router.get('/me', auth, async (req, res) => {
+  const user = await User.findById(req.user._id).select('-password');
+  res.send(user);
+});
 
-router.post('/', async (req, res) => {
+// Route for creating new users
+// @Post Create new vehicle
+router.post('/', auth, async (req, res) => {
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 

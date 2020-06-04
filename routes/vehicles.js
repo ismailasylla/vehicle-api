@@ -1,3 +1,4 @@
+const auth = require('../middleware/auth');
 const express = require('express');
 const router = express.Router();
 const Joi = require('@hapi/joi');
@@ -68,7 +69,7 @@ router.get('/', async (req, res) => {
 });
 
 // Create Vehicle
-router.post('/', async (req, res) => {
+router.post('/', auth, async (req, res) => {
   const { error } = validateVehicle(req.body);
 
   if (error) return res.status(400).send(error.details[0].message);
@@ -96,7 +97,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // Update
-router.put('/:id', async (req, res) => {
+router.put('/:id', auth, async (req, res) => {
   // Validate
   const { error } = validateVehicle(req.body);
   // Vehicle validation
@@ -117,7 +118,7 @@ function validateVehicle(vehicle) {
   const schema = {
     name: Joi.string().required(),
     category: Joi.string(),
-    transmission: Joi.string().length(15),
+    transmission: Joi.string(),
     engine: Joi.number(),
     fuelType: Joi.string().length(5),
     colorExterior: Joi.string().length(15),
@@ -129,7 +130,7 @@ function validateVehicle(vehicle) {
 }
 
 // DELETE
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', auth, async (req, res) => {
   const vehicle = await Vehicle.findByIdAndRemove(req.params.id);
 
   if (!vehicle)
