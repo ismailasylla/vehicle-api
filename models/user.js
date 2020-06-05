@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const Joi = require('@hapi/joi');
 const mongoose = require('mongoose');
 
-// Creating Schema
+// Creating User Schema
 const userSchema = new mongoose.Schema({
   name: {
     type: String,

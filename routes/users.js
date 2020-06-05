@@ -15,8 +15,8 @@ router.get('/me', auth, async (req, res) => {
   res.send(user);
 });
 
-// Route for creating new users
-// @Post Create new vehicle
+// Route for creating new users.
+// @Post Create new vehicle if the user is authenticated.
 router.post('/', auth, async (req, res) => {
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
@@ -33,6 +33,7 @@ router.post('/', auth, async (req, res) => {
     password: req.body.password,
   });
 
+  // mehode to hash the password.
   const salt = await bcrypt.genSalt(10);
   user.password = await bcrypt.hash(user.password, salt);
   user = await user.save();
