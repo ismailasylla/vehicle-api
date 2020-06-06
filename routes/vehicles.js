@@ -5,13 +5,13 @@ const router = express.Router();
 const { Vehicle } = require('../models/vehicle');
 const { validate } = require('../models/vehicle');
 
-// Get all vehicles
+// @Get all vehicles
 router.get('/', async (req, res) => {
   const vehicles = await Vehicle.find().sort('name');
   res.send(vehicles);
 });
 
-// Create Vehicle
+// @Create Vehicle
 router.post('/', auth, async (req, res) => {
   const { error } = validate(req.body);
 
@@ -31,7 +31,7 @@ router.post('/', auth, async (req, res) => {
   res.send(vehicle);
 });
 
-// Get a single vehicle
+// @Get a single vehicle
 router.get('/:id', async (req, res) => {
   const vehicle = await Vehicle.findById(req.params.id);
   if (!vehicle)
@@ -39,7 +39,7 @@ router.get('/:id', async (req, res) => {
   res.send(vehicle);
 });
 
-// Update
+// @Update
 router.put('/:id', auth, async (req, res) => {
   // Validate
   const { error } = validate(req.body);
@@ -57,7 +57,7 @@ router.put('/:id', auth, async (req, res) => {
   res.send(vehicle);
 });
 
-// DELETE
+// @DELETE
 router.delete('/:id', [auth, admin], async (req, res) => {
   const vehicle = await Vehicle.findByIdAndRemove(req.params.id);
 

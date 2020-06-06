@@ -1,6 +1,4 @@
 const auth = require('../middleware/auth'); // auhorisation
-const jwt = require('jsonwebtoken');
-const config = require('config');
 const bcrypt = require('bcrypt');
 const _ = require('lodash');
 const { User, validate } = require('../models/user');
@@ -12,12 +10,13 @@ const router = express.Router();
 //@Get Current User
 router.get('/me', auth, async (req, res) => {
   const user = await User.findById(req.user._id).select('-password');
+  if (!user) return res.status(400).send('There are no users in the database!');
   res.send(user);
 });
 
 // Route for creating new users.
 // @Post Create new vehicle if the user is authenticated.
-router.post('/', auth, async (req, res) => {
+router.post('/', async (req, res) => {
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
