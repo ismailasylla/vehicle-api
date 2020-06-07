@@ -1,3 +1,4 @@
+const error = require('./middleware/error');
 const config = require('config');
 const express = require('express');
 const vehicles = require('./routes/vehicles');
@@ -22,12 +23,16 @@ mongoose
   .then(() => console.log('connected'))
   .catch((err) => console.log('Could not connect to the database!', err));
 
+// Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/', home);
 app.use('/api/vehicles', vehicles);
 app.use('/api/users', users);
 app.use('/api/auth', auth);
+
+// Middleware for handdling error.
+app.use(error);
 
 // Server // PORT
 const port = process.env.PORT || 3000;

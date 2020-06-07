@@ -1,3 +1,4 @@
+const asyncMiddleware = require('../middleware/async');
 const auth = require('../middleware/auth');
 const admin = require('../middleware/admin');
 const express = require('express');
@@ -6,30 +7,37 @@ const { Vehicle } = require('../models/vehicle');
 const { validate } = require('../models/vehicle');
 
 // @Get all vehicles
-router.get('/', async (req, res) => {
-  const vehicles = await Vehicle.find().sort('name');
-  res.send(vehicles);
-});
+router.get(
+  '/',
+  asyncMiddleware(async (req, res) => {
+    const vehicles = await Vehicle.find().sort('name');
+    res.send(vehicles);
+  })
+);
 
 // @Create Vehicle
-router.post('/', auth, async (req, res) => {
-  const { error } = validate(req.body);
+router.post(
+  '/',
+  auth,
+  asyncMiddleware(async (req, res) => {
+    const { error } = validate(req.body);
 
-  if (error) return res.status(400).send(error.details[0].message);
+    if (error) return res.status(400).send(error.details[0].message);
 
-  let vehicle = new Vehicle({
-    name: req.body.name,
-    category: req.body.category,
-    transmission: req.body.transmission,
-    engine: req.body.engine,
-    fuelType: req.body.fuelType,
-    colorExterior: req.body.colorExterior,
-    colorInterior: req.body.colorInterior,
-    price: req.body.price,
-  });
-  vehicle = await vehicle.save();
-  res.send(vehicle);
-});
+    let vehicle = new Vehicle({
+      name: req.body.name,
+      category: req.body.category,
+      transmission: req.body.transmission,
+      engine: req.body.engine,
+      fuelType: req.body.fuelType,
+      colorExterior: req.body.colorExterior,
+      colorInterior: req.body.colorInterior,
+      price: req.body.price,
+    });
+    vehicle = await vehicle.save();
+    res.send(vehicle);
+  })
+);
 
 // @Get a single vehicle
 router.get('/:id', async (req, res) => {
